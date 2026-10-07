@@ -1,13 +1,11 @@
 import sqlite3
 from datetime import date
 import requests
+import json
 
-# Ciudades con sus coordenadas (latitud, longitud)
-CIUDADES = {
-    "Valparaíso":   (-33.0472, -71.6127),
-    "Viña del Mar": (-33.0245, -71.5518),
-    "Santiago":     (-33.4489, -70.6693),
-}
+# Ciudades activas, leídas de ciudades.json
+with open("ciudades.json", encoding="utf-8") as f:
+    CIUDADES = {c["nombre"]: (c["lat"], c["lon"]) for c in json.load(f) if c["activa"]}
 
 # Variables diarias que pedimos a la API
 DIARIAS = ("temperature_2m_min,temperature_2m_max,"

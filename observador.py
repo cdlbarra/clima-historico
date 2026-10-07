@@ -1,12 +1,11 @@
 import sqlite3
 from datetime import date, timedelta
 import requests
+import json
 
-CIUDADES = {
-    "Valparaíso":   (-33.0472, -71.6127),
-    "Viña del Mar": (-33.0245, -71.5518),
-    "Santiago":     (-33.4489, -70.6693),
-}
+# Ciudades activas, leídas de ciudades.json
+with open("ciudades.json", encoding="utf-8") as f:
+    CIUDADES = {c["nombre"]: (c["lat"], c["lon"]) for c in json.load(f) if c["activa"]}
 
 DIARIAS = "temperature_2m_min,temperature_2m_max,precipitation_sum,wind_speed_10m_max"
 

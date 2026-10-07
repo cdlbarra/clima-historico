@@ -1,0 +1,5 @@
+[
+  {"nombre": "Valparaíso",   "lat": -33.0472, "lon": -71.6127, "activa": true},
+  {"nombre": "Viña del Mar", "lat": -33.0245, "lon": -71.5518, "activa": true},
+  {"nombre": "Santiago",     "lat": -33.4489, "lon": -70.6693, "activa": true}
+]
