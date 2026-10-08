@@ -1,5 +1,7 @@
 [
   {"nombre": "Valparaíso",   "lat": -33.0472, "lon": -71.6127, "activa": true},
   {"nombre": "Viña del Mar", "lat": -33.0245, "lon": -71.5518, "activa": true},
-  {"nombre": "Santiago",     "lat": -33.4489, "lon": -70.6693, "activa": true}
+  {"nombre": "Santiago",     "lat": -33.4489, "lon": -70.6693, "activa": true},
+  {"nombre": "Iquique",      "lat": -20.2133, "lon": -70.1503, "activa": true},
+  {"nombre": "Buenos Aires", "lat": -34.6132, "lon": -58.3772, "activa": true}
 ]
