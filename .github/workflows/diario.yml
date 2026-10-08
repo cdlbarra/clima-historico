@@ -23,6 +23,7 @@ jobs:
       - run: python observador.py
 
       - name: Guardar cambios en weather.db
+        if: always()  # siempre se ejecuta, aunque fallen los pasos anteriores
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
