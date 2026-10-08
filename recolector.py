@@ -1,11 +1,26 @@
 import sqlite3
 from datetime import date
+import time
 import requests
 import json
 
 # Ciudades activas, leídas de ciudades.json
 with open("ciudades.json", encoding="utf-8") as f:
     CIUDADES = {c["nombre"]: (c["lat"], c["lon"]) for c in json.load(f) if c["activa"]}
+
+
+def pedir(url, params):
+    # hasta 3 intentos; un timeout aislado no debe botar toda la ejecución
+    for intento in range(3):
+        try:
+            r = requests.get(url, params=params, timeout=60)
+            r.raise_for_status()
+            return r
+        except requests.RequestException:
+            if intento == 2:
+                raise
+            time.sleep(5 * (intento + 1))
+
 
 # Variables diarias que pedimos a la API
 DIARIAS = ("temperature_2m_min,temperature_2m_max,"
@@ -17,13 +32,13 @@ conn = sqlite3.connect("weather.db")
 
 for ciudad, (lat, lon) in CIUDADES.items():
     # 1. Pedir el pronóstico a la API
-    r = requests.get("https://api.open-meteo.com/v1/forecast", params={
+    r = pedir("https://api.open-meteo.com/v1/forecast", params={
         "latitude": lat,
         "longitude": lon,
         "daily": DIARIAS,
         "timezone": "America/Santiago",
         "forecast_days": 4,          # hoy + 3 días
-    }, timeout=20)
+    })
     r.raise_for_status()             # si la API falla, se detiene con error claro
     d = r.json()["daily"]
 

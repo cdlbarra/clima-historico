@@ -1,11 +1,26 @@
 import sqlite3
 from datetime import date, timedelta
+import time
 import requests
 import json
 
 # Ciudades activas, leídas de ciudades.json
 with open("ciudades.json", encoding="utf-8") as f:
     CIUDADES = {c["nombre"]: (c["lat"], c["lon"]) for c in json.load(f) if c["activa"]}
+
+
+def pedir(url, params):
+    # hasta 3 intentos; un timeout aislado no debe botar toda la ejecución
+    for intento in range(3):
+        try:
+            r = requests.get(url, params=params, timeout=60)
+            r.raise_for_status()
+            return r
+        except requests.RequestException:
+            if intento == 2:
+                raise
+            time.sleep(5 * (intento + 1))
+
 
 DIARIAS = "temperature_2m_min,temperature_2m_max,precipitation_sum,wind_speed_10m_max"
 
@@ -30,14 +45,14 @@ CREATE TABLE IF NOT EXISTS observado (
 """)
 
 for ciudad, (lat, lon) in CIUDADES.items():
-    r = requests.get("https://archive-api.open-meteo.com/v1/archive", params={
+    r = pedir("https://archive-api.open-meteo.com/v1/archive", params={
         "latitude": lat,
         "longitude": lon,
         "start_date": desde,
         "end_date": hasta,
         "daily": DIARIAS,
         "timezone": "America/Santiago",
-    }, timeout=20)
+    })
     r.raise_for_status()
     d = r.json()["daily"]
 
