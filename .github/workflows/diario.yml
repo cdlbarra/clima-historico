@@ -30,3 +30,11 @@ jobs:
           git add weather.db
           git diff --staged --quiet || git commit -m "Datos del $(date -u +%F)"
           git push
+      - name: Sincronizar con Supabase
+        if: always()
+        continue-on-error: true
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        run: |
+          pip install "psycopg[binary]"
+          python sincronizar.py
