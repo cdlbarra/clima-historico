@@ -3,6 +3,7 @@ name: Recolector diario
 on:
   schedule:
     - cron: "0 11 * * *"    # todos los días a las 11:00 UTC
+    - cron: "0 23 * * *"    # todos los días a las 11:00 UTC
   workflow_dispatch:         # permite ejecutarlo a mano desde GitHub
 
 permissions:
