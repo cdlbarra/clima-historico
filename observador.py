@@ -1,5 +1,6 @@
 import sqlite3
-from datetime import date, timedelta
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 import time
 import requests
 import json
@@ -25,7 +26,7 @@ def pedir(url, params):
 DIARIAS = "temperature_2m_min,temperature_2m_max,precipitation_sum,wind_speed_10m_max"
 
 # Ventana: de hace 12 días a hace 5 días (el archivo tiene ~5 días de retraso)
-hoy = date.today()
+hoy = datetime.now(ZoneInfo("America/Santiago")).date()
 desde = (hoy - timedelta(days=12)).isoformat()
 hasta = (hoy - timedelta(days=5)).isoformat()
 

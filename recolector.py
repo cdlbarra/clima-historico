@@ -1,5 +1,6 @@
 import sqlite3
-from datetime import date
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import time
 import requests
 import json
@@ -27,7 +28,7 @@ DIARIAS = ("temperature_2m_min,temperature_2m_max,"
            "precipitation_probability_max,precipitation_sum,"
            "wind_speed_10m_max,relative_humidity_2m_mean")
 
-hoy = date.today().isoformat()   # ej. "2026-10-06"
+hoy = datetime.now(ZoneInfo("America/Santiago")).date().isoformat()   # fecha en Chile, ej. "2026-10-06"
 conn = sqlite3.connect("weather.db")
 
 for ciudad, (lat, lon) in CIUDADES.items():
